@@ -8,9 +8,10 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.WsFederation;
 using Owin;
+
 namespace MusicWeb
 {
-    public class Startup
+    public partial class Startup
     {
         private static string realm = ConfigurationManager.AppSettings["ida:Wtrealm"];
         private static string adfsMetadata = ConfigurationManager.AppSettings["ida:ADFSMetadata"];
