@@ -16,5 +16,6 @@ namespace MusicWeb
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Song> Songs { get; set; }
+        public DbSet<Account> Users { get; set; }
     }
 }

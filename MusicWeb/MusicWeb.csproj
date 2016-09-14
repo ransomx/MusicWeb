@@ -163,7 +163,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\LoggedController.cs" />
     <Compile Include="Controllers\PlaylistController.cs" />
     <Compile Include="Models\AdminModel.cs" />
@@ -189,6 +189,7 @@
     <Compile Include="Models\Search.cs" />
     <Compile Include="MusicWebDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MusicWeb.mdf" />
