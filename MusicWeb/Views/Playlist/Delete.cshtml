@@ -1,0 +1,17 @@
+﻿@model MusicWeb.Models.Playlist
+
+<h3>Are you sure you want to delete @Html.DisplayNameFor(model => model.Name)?</h3>
+
+@using (Ajax.BeginForm("Delete", "Playlist", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "content",
+    InsertionMode = InsertionMode.Replace,
+    OnSuccess = "UpdateMenu",
+})){
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Confirm" class="btn btn-default" />
+    </div>
+}

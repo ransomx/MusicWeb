@@ -1,0 +1,49 @@
+﻿@model MusicWeb.Models.Playlist
+
+<ul class="list-inline">
+    <li><h4>@Html.DisplayFor(model => model.Name)</h4></li>
+    <li><a onclick="PlayAll(@Model.Id)">Play</a></li>
+    <li><a class="fetchable" data-url="@Url.Action("Edit", "Playlist", new { id = Model.Id })">Rename</a></li>
+    <li><a class="fetchable" data-url="@Url.Action("Delete", "Playlist", new { id = Model.Id })">Delete</a></li>
+</ul>
+<hr />
+<div class="contained-data mCustomScrollbar" data-mcs-theme="dark">
+    <table class="search-results-table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => Model.SongList.FirstOrDefault().Title)</th>
+                <th>@Html.DisplayNameFor(model => Model.SongList.FirstOrDefault().Artist)</th>
+                <th>@Html.DisplayNameFor(model => Model.SongList.FirstOrDefault().Genre)</th>
+                <th>@Html.DisplayNameFor(model => Model.SongList.FirstOrDefault().TimeUploaded)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (MusicWeb.Models.Song s in Model.SongList)
+            {
+                <tr class="result-row">
+                    <td>@Html.DisplayFor(item => s.Title) </td>
+                    <td>@Html.DisplayFor(item => s.Artist.Name)</td>
+                    <td>@Html.DisplayFor(item => s.Genre.Name)</td>
+                    <td>@Html.DisplayFor(item => s.TimeUploaded)</td>
+                    <td>
+                        <a class="btn btn-group-sm playable" onclick="PlaySong(@s.Id)">
+                            Play
+                        </a>
+                    </td>
+                    <td>
+                        <a data-url="@Url.Action("RemoveSong", "Playlist",
+                                    new { filename = s.Filename, playlistId = Model.Id })" class="fetchable">Remove</a>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-group-sm popup-display"
+                                data-url="@Url.Action("ChoosePlaylist", "Playlist", new { toAdd = s.Id , searchedSong = s.Title})">
+                            Add
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

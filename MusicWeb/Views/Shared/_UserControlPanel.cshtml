@@ -1,0 +1,11 @@
+﻿@if (HttpContext.Current.User.Identity.IsAuthenticated)
+{
+    <li><a data-url="@Url.Action("Index", "Account")" class="fetchable">
+        @HttpContext.Current.User.Identity.Name</a></li>
+    <li><a data-url="@Url.Action("Logout", "Account")" class="fetchable update-control update-menu">Logout</a></li>
+}
+else
+{
+    <li><a data-url="@Url.Action("Login", "Account")" class="fetchable update-control update-menu">Login</a></li>
+    <li><a data-url="@Url.Action("Register", "Account")" class="fetchable">Register</a></li>
+}

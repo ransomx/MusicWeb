@@ -1,0 +1,16 @@
+﻿@model MusicWeb.Models.ChoosePlaylist
+
+<h3>Adding @Model.SearchedSong to a playlist</h3>
+@using (Ajax.BeginForm("AddToPlaylist", "Playlist", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "content",
+    InsertionMode = InsertionMode.InsertAfter,
+}))
+{
+    @Html.DropDownList("PlaylistId", String.Empty)
+    @Html.HiddenFor(m => m.SongId)
+    @Html.HiddenFor(m => m.SearchedSong)
+    <input type="submit" value="Add" class="popup-close" />
+    <input type="submit" value="Cancel" class="popup-close" />
+}

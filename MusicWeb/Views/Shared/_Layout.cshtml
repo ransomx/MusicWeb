@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+    <link rel="stylesheet" href="~/Content/jquery.mCustomScrollbar.min.css" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script type="text/javascript">
+        function UpdateUserAll() {
+            UpdateMenu();
+            UpdateControl();
+        }
+
+        function UpdateMenu() {
+            $('#user-menu').load('@Url.Action("UserMenu", "Home")');
+        }
+
+        function UpdateControl() {
+            $('#user-control').load('@Url.Action("UserControlPanel", "Home")');
+        }
+
+        $(function () {
+            $(document).on('click', '.fetchable', function (e) {
+                e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+                var v = $(this);
+                $.ajax({
+                    url: v.data('url'),
+                    cache: false,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#content").html(data);
+                        if (v.hasClass("update-control")) {
+                            UpdateControl();
+                        }
+                        if (v.hasClass("update-menu")) {
+                            UpdateMenu();
+                        }
+                    }
+                });
+
+            });
+
+            $(document).on('click', '.popup-display', function (e) {
+                $('#my-popup').toggle(100);
+                e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+                var url = $(this).data('url');
+                $('#my-popup').load(url);
+            });
+
+            $(document).on('click', '.popup-close', function (e) {
+                $('#my-popup').toggle(100);
+            });
+        });
+
+        var audio; var status;
+        var actionLinks; var songName;
+
+        /* Takes playlist ID as parameter.
+        * Send the ID to controller function, that sets the playlist as active
+        * Next, it calls the PlaySong function.*/
+        function PlayAll(id) {
+            $.ajax({
+                type: "POST",
+                url: actionLinks.Url_playall,
+                data: { 'playlistId': id },
+                success: function () {
+                    Play();
+                }
+            });
+        }
+
+        function PlaySong(id) {
+            $.ajax({
+                type: "POST",
+                url: actionLinks.Url_playSpecific,
+                data: { 'songId': id },
+                success: function () {
+                    Play();
+                }
+            });
+        }
+
+        /* This function loads the file located in ActivePlaylist (just the song!)
+        *  Filepath is generated, url is loaded into audio elements src and audio
+        * element is then set to play state.*/
+        function Play() {;
+            $.ajax({
+                type: "GET",
+                url: actionLinks.Url_playSong,
+                success: function (url) {
+                    songName = url.split('.')[0];
+                    audio.src = "../../Content/Media/uploads/" + url;
+                    audio.load();
+                    audio.play();
+                }
+            });
+        }
+
+        /* Loads calls the controller action NextSong that sets the next song in playlist
+        * And then executs the playsong method.*/
+        function PlayNext() {
+            $.ajax({
+                type: "GET",
+                url: actionLinks.Url_playnext,
+                success: function () {
+                    Play();
+                }
+            });
+        };
+
+        (function ($) {
+            $(window).on("load", function () {
+                $(".contained-data").mCustomScrollbar();
+            });
+        })(jQuery);
+
+        function PlayPrev() {
+            $.ajax({
+                type: "GET",
+                url: actionLinks.Url_playprev,
+                success: function () {
+                    Play();
+                }
+            });
+        };
+
+        /* DOM loaded, added logic here */
+        window.onload = (function () {
+            actionLinks = {
+                Url_playall: '@Url.Action("PlayAll", "Home")',
+                Url_playnext: '@Url.Action("PlayNext", "Home")',
+                Url_playSpecific: '@Url.Action("PlaySpecific", "Home")',
+                Url_playSong: '@Url.Action("PlaySong", "Home")',
+                Url_playprev: '@Url.Action("PlayPrev", "Home")',
+            }
+            audio = document.getElementById("player");
+            status = document.getElementById("playerStatus");
+
+            document.getElementById("player").addEventListener("ended", function () { ChangeStatus("Not playing"); PlayNext() });
+            document.getElementById("player").addEventListener("playing", function () { ChangeStatus("Now playing: <i style='color: red'>" + songName + "</i>") });
+            document.getElementById("player").addEventListener("pause", function () { ChangeStatus("Paused") });
+            document.getElementById("player").addEventListener("error", function () { ChangeStatus("No song") });
+            document.getElementById("player").addEventListener("canplay", function () { ChangeStatus("Ready") });
+        });
+
+        function ChangeStatus(text) {
+            document.getElementById("playerStatus").innerHTML = text;
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a data-url="@Url.Action("HomeSearch", "Home")" class="fetchable navbar-brand">Space Music</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a data-url="@Url.Action("About", "Home")" class="fetchable">About</a></li>
+                    <li><a data-url="@Url.Action("Contact", "Home")" class="fetchable">Contact</a></li>
+                    <li id="audioplayer">
+                        <audio id="player" controls autoplay class="player">
+                        </audio>
+                    </li>
+                    <li><a onclick="PlayPrev()">Prev</a></li>
+                    <li><a onclick="PlayNext()">Next</a></li>
+                    <li id="playerStatus">
+
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav right" id="user-control">
+                    @Html.Action("UserControlPanel", "Home")
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper body-content">
+        @RenderBody()
+        <div id="user-menu">
+            @Html.Action("UserMenu", "Home")
+        </div>
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    <div id="my-popup" class="popup">
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

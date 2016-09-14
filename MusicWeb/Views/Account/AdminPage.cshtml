@@ -1,0 +1,72 @@
+﻿@using MusicWeb.Models
+@model AdminModel
+<h2> Welcome Administrator </h2>
+<hr />
+<div class="contained-data">
+    <h4>Songs</h4>
+    <table class="search-results-table overlay inline">
+        <thead>
+            <tr>
+                <td>@Html.DisplayNameFor(model => Model.Songs.FirstOrDefault().Title)</td>
+                <td>@Html.DisplayNameFor(model => Model.Songs.FirstOrDefault().Artist)</td>
+                <td>@Html.DisplayNameFor(model => Model.Songs.FirstOrDefault().TimeUploaded)</td>
+                <td>@Html.DisplayNameFor(model => Model.Songs.FirstOrDefault().Genre)</td>
+                <td>@Html.DisplayNameFor(model => Model.Songs.FirstOrDefault().Playlists) Count</td>
+            </tr>
+        </thead>
+        <tbody class="contained-data-sm">
+            @foreach (Song s in Model.Songs)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => s.Title)</td>
+                    <td>@Html.DisplayFor(model => s.Artist.Name)</td>
+                    <td>@Html.DisplayFor(model => s.TimeUploaded)</td>
+                    <td>@Html.DisplayFor(model => s.Genre.Name)</td>
+                    <td>@Html.DisplayFor(model => s.Playlists.Count)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Playlists</h4>
+    <table class="search-results-table overlay inline">
+        <thead>
+            <tr>
+                <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().Name)</td>
+                <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().Creator)</td>
+                <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().SongList)</td>
+            </tr>
+        </thead>
+        <tbody class="contained-data-sm">
+            @foreach (Playlist s in Model.Playlists)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => s.Name)</td>
+                    <td>@Html.DisplayFor(model => s.Creator.UserName)</td>
+                    <td>@Html.DisplayFor(model => s.SongList.Count)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Users</h4>
+    <table class="search-results-table overlay inline">
+        <thead>
+            <tr>
+                <td>@Html.DisplayNameFor(model => Model.Users.FirstOrDefault().UserName)</td>
+                <td>@Html.DisplayNameFor(model => Model.Users.FirstOrDefault().Email)</td>
+                <td>@Html.DisplayNameFor(model => Model.Users.FirstOrDefault().Playlists.Count)</td>
+            </tr>
+        </thead>
+        <tbody class="contained-data-sm">
+            @foreach (Account s in Model.Users)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => s.UserName)</td>
+                    <td>@Html.DisplayFor(model => s.Email)</td>
+                    <td>@Html.DisplayFor(model => s.Playlists.Count)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

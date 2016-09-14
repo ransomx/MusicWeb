@@ -1,0 +1,33 @@
+﻿@using MusicWeb.Models
+@model Search
+
+<div class="main-content">
+    @{Html.RenderPartial("_Search", Model);}
+    <h4 class="announcer right">Displaying Songs for "@Model.SearchedSong.Title", @Model.SearchResult.Count() were found! </h4>
+    <table class="search-results-table">
+        <thead>
+            <tr >
+                <th>@Html.DisplayNameFor(model => Model.SearchedSong.Title)</th>
+                <th>@Html.DisplayNameFor(model => Model.SearchedSong.Artist)</th>
+                <th>@Html.DisplayNameFor(model => Model.SearchedSong.Genre)</th>
+                <th>@Html.DisplayNameFor(model => Model.SearchedSong.TimeUploaded)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Song s in Model.SearchResult)
+            {
+                <tr class="result-row">
+                    <td>@Html.DisplayFor(item => s.Title) </td>
+                    <td>@Html.DisplayFor(item => s.Artist.Name)</td>
+                    <td>@Html.DisplayFor(item => s.Genre.Name)</td>
+                    <td>@Html.DisplayFor(item => s.TimeUploaded)</td>
+                    <td><a class="btn btn-group-sm" onclick="PlaySong(@s.Id)">Play</a></td>
+                    <td><a class="btn btn-group-sm popup-display"
+                                data-url="@Url.Action("ChoosePlaylist", "Playlist", 
+                                         new { toAdd = s.Id , searchedSong = s.Title})">Add</a></td>
+                    <td> @Html.ActionLink("Download", "Download", "Home", new { songToDownload = s.Filename})</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
