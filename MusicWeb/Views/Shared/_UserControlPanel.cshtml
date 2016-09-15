@@ -2,7 +2,9 @@
 {
     <li><a data-url="@Url.Action("Index", "Account")" class="fetchable">
         @HttpContext.Current.User.Identity.Name</a></li>
-    <li><a data-url="@Url.Action("Logout", "Account")" class="fetchable update-control update-menu">Logout</a></li>
+    <li>
+            <a href="https://login.windows.net/common/oauth2/logout?post_logout_r‌​edirect_uri=https://hkrmusicapp.azurewebsites.net/">Logout</a>
+</li>
 }
 else
 {
