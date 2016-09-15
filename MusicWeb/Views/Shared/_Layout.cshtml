@@ -95,10 +95,11 @@
                 type: "GET",
                 url: actionLinks.Url_playSong,
                 success: function (url) {
-                    songName = url.split('.')[0];
+                    songName = url.split('/').pop()
                     audio.src = url
                     audio.load();
                     audio.play();
+                    ShowNotification('Now playing: '+songName);
                 }
             });
         }
@@ -150,57 +151,69 @@
             document.getElementById("player").addEventListener("canplay", function () { ChangeStatus("Ready") });
         });
 
+
+        function ShowNotification(msg) {
+            $("#notification-msg").text(msg);
+            $(".notification").fadeIn().delay(5000).fadeOut();
+        }
+
         function ChangeStatus(text) {
             document.getElementById("playerStatus").innerHTML = text;
         }
     </script>
-</head>
-<body>
-    <div class="navbar navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a data-url="@Url.Action("HomeSearch", "Home")" class="fetchable navbar-brand">Space Music</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a data-url="@Url.Action("About", "Home")" class="fetchable">About</a></li>
-                    <li><a data-url="@Url.Action("Contact", "Home")" class="fetchable">Contact</a></li>
-                    <li id="audioplayer">
-                        <audio id="player" controls autoplay class="player">
-                        </audio>
-                    </li>
-                    <li><a onclick="PlayPrev()">Prev</a></li>
-                    <li><a onclick="PlayNext()">Next</a></li>
-                    <li id="playerStatus">
+    </head>
+    <body>
+        <div class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a data-url="@Url.Action("HomeSearch", "Home")" class="fetchable navbar-brand">Space Music</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a data-url="@Url.Action("About", "Home")" class="fetchable">About</a></li>
+                        <li><a data-url="@Url.Action("Contact", "Home")" class="fetchable">Contact</a></li>
+                        <li id="audioplayer">
+                            <audio id="player" controls autoplay class="player"></audio>
+                        </li>
+                        <li><a onclick="PlayPrev()">Prev</a></li>
+                        <li><a onclick="PlayNext()">Next</a></li>
+                        <li id="playerStatus">
 
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav right" id="user-control">
-                    @Html.Action("UserControlPanel", "Home")
-                </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav right" id="user-control">
+                        @Html.Action("UserControlPanel", "Home")
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="wrapper body-content">
-        @RenderBody()
-        <div id="user-menu">
-            @Html.Action("UserMenu", "Home")
+        <div class="notification">
+            <ul>
+                <li id="notification-icon"></li>
+                <li id="notification-msg">MSGS</li>
+            </ul>
         </div>
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-    <div id="my-popup" class="popup">
-    </div>
+        
+        <div class="wrapper body-content">
+            @RenderBody()
+            <div id="user-menu">
+                @Html.Action("UserMenu", "Home")
+            </div>
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+        <div id="my-popup" class="popup">
+        </div>
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
 </html>

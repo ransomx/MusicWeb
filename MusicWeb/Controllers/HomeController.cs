@@ -50,6 +50,7 @@ namespace MusicWeb.Controllers
             Song prev = null;
             if (CurrentPlaylist != null)
                 prev = GetSong(--SongIndex);
+            else prev = CurrentSong;
             return prev;
         }
 
@@ -66,8 +67,9 @@ namespace MusicWeb.Controllers
         private Song GetNextSong()
         {
             Song next = null;
-            if (CurrentPlaylist !=null)
+            if (CurrentPlaylist != null)
                 next = GetSong(++SongIndex);
+            next= CurrentSong;
             return next;
         }
 
@@ -125,7 +127,7 @@ namespace MusicWeb.Controllers
             using (WebClient wc = new WebClient())
             {
                 var byteArr = wc.DownloadData(blockBlob.Uri);
-                return File(byteArr, "mp3");
+                return File(byteArr, "application/zip", toDownload);
             }
         }
 

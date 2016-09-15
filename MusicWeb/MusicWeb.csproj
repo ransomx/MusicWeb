@@ -218,6 +218,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Media\icons_exclamation.png" />
     <Content Include="MusicWeb.mdf" />
     <Content Include="MusicWeb_log.ldf">
       <DependentUpon>MusicWeb.mdf</DependentUpon>

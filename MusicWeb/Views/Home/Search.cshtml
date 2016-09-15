@@ -26,14 +26,7 @@
                                 data-url="@Url.Action("ChoosePlaylist", "Playlist", 
                                          new { toAdd = s.Id , searchedSong = s.Title})">Add</a></td>
                     <td> 
-                        @using (Ajax.BeginForm(
-                            "Download", "Home",
-                            new { toDownload = s.Filename },
-                            FormMethod.Post,
-                            new { enctype = "multipart/form-data" }))
-                        {
-                            <input type="submit" name="submit" value="Download" />
-                        }
+                        @Html.ActionLink("Download", "Download", "Home", new { toDownload = s.Filename }, htmlAttributes : new { onclick = "ShowNotification('Downloading song: "+s.Filename+"')" })
                     </td>
                 </tr>
             }
