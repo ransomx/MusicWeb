@@ -96,7 +96,7 @@
                 url: actionLinks.Url_playSong,
                 success: function (url) {
                     songName = url.split('.')[0];
-                    audio.src = "../../Content/Media/uploads/" + url;
+                    audio.src = url
                     audio.load();
                     audio.play();
                 }

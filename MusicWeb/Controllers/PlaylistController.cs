@@ -57,10 +57,8 @@ namespace MusicWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                /*
                 var store = new UserStore<Account>(db);
                 var userManager = new UserManager<Account>(store);
-
 
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
@@ -68,7 +66,7 @@ namespace MusicWeb.Controllers
 
                 userManager.FindById(userIdValue).Playlists.Add(playlist);
                 store.Context.SaveChanges();
-                return PartialView("../Home/HomeSearch");*/
+                return PartialView("../Home/HomeSearch");
             }
             return PartialView(playlist);
         }

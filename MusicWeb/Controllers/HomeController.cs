@@ -4,6 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using Microsoft.Azure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
+using System.IO;
+using System.Net;
+
 namespace MusicWeb.Controllers
 {
     public class HomeController : Controller
@@ -101,17 +107,25 @@ namespace MusicWeb.Controllers
             return PartialView();
         }
 
-        public ActionResult Download(string songToDownload)
+        public FileResult Download(string toDownload)
         {
-            try
+            // Retrieve storage account from connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("media");
+
+            // Retrieve reference to a blob named "photo1.jpg".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(toDownload);
+
+            using (WebClient wc = new WebClient())
             {
-                var fs = System.IO.File.OpenRead(Server.MapPath("~/Content/Media/uploads/" + songToDownload));
-                return File(fs, "application/zip", songToDownload);
-            }
-            catch
-            {
-                this.HttpContext.AddError(new HttpException(404, "Song file not found: " + songToDownload));
-                return View();
+                var byteArr = wc.DownloadData(blockBlob.Uri);
+                return File(byteArr, "mp3");
             }
         }
 
@@ -139,8 +153,19 @@ namespace MusicWeb.Controllers
         {
             if (CurrentSong != null)
             {
-                var filename = CurrentSong.Filename;
-                return filename;
+                // Retrieve storage account from connection string.
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                    CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+                // Create the blob client.
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+                // Retrieve reference to a previously created container.
+                CloudBlobContainer container = blobClient.GetContainerReference("media");
+
+                // Retrieve reference to a blob named "myblob".
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(CurrentSong.Filename);
+                return blockBlob.Uri.ToString();
             }
             return "Nothing to play here";
         }

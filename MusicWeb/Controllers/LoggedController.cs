@@ -1,4 +1,7 @@
-﻿using MusicWeb.Models;
+﻿using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using MusicWeb.Models;
 using System;
 using System.IO;
 using System.Web.Mvc;
@@ -25,14 +28,26 @@ namespace MusicWeb.Controllers
         {
             if (model.UploadFile.ContentLength > 0)
             {
-                var fileName = Path.GetFileName(model.UploadFile.FileName);
-                var path = Path.Combine(Server.MapPath("~/Content/Media/uploads/"), fileName);
-                model.UploadFile.SaveAs(path);
+                // Retrieve storage account from connection string.
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+                // Create the blob client.
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+                // Retrieve reference to a previously created container.
+                CloudBlobContainer container = blobClient.GetContainerReference("media");
+
+                // Retrieve reference to a blob named "myblob".
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(model.UploadFile.FileName);
+
+                // Create or overwrite the "myblob" blob with contents from a local file.
+                blockBlob.UploadFromStream(model.UploadFile.InputStream);
 
                 Song toAdd = new Song() {
                     Artist = model.Artist,
                     Title = model.Title,
-                    Filename = fileName,
+                    Filename = model.UploadFile.FileName,
                     TimeUploaded = DateTime.Now,
                     Genre = db.Genres.Find(GenreId)
                 };

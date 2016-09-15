@@ -10,7 +10,7 @@ namespace MusicWeb
 {
     public class MusicWebDB : IdentityDbContext<Account>
     {
-        public MusicWebDB() : base("name=MusicWebDB") { }
+        public MusicWebDB() : base("name=MusicWebDBAzure") { }
 
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Genre> Genres { get; set; }

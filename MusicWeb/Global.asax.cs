@@ -17,7 +17,7 @@ namespace MusicWeb
         protected void Application_Start()
         {
             //Database.SetInitializer(new MusicDBInitializer());
-            /*
+
             MusicWebDB db = new MusicWebDB();
             RoleStore<AccountRole> roleStore = new RoleStore<AccountRole>(db);
             RoleManager<AccountRole> roleManager = new RoleManager<AccountRole>(roleStore);
@@ -32,7 +32,7 @@ namespace MusicWeb
             {
                 AccountRole newRole = new AccountRole("RegisteredUser", "Registered users can create playlist, upload songs.");
                 roleManager.Create(newRole);
-            }*/
+            }
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

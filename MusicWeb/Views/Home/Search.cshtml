@@ -25,7 +25,16 @@
                     <td><a class="btn btn-group-sm popup-display"
                                 data-url="@Url.Action("ChoosePlaylist", "Playlist", 
                                          new { toAdd = s.Id , searchedSong = s.Title})">Add</a></td>
-                    <td> @Html.ActionLink("Download", "Download", "Home", new { songToDownload = s.Filename})</td>
+                    <td> 
+                        @using (Ajax.BeginForm(
+                            "Download", "Home",
+                            new { toDownload = s.Filename },
+                            FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+                        {
+                            <input type="submit" name="submit" value="Download" />
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
