@@ -32,7 +32,7 @@
                     </td>
                     <td>
                         <a data-url="@Url.Action("RemoveSong", "Playlist",
-                                    new { filename = s.Filename, playlistId = Model.Id })" class="fetchable">Remove</a>
+                                    new { filename = s.Filename, playlistId = Model.Id })" class="fetchable" onclick = "ShowNotification('Song removed')">Remove</a>
                     </td>
 
                     <td>

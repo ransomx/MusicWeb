@@ -180,6 +180,12 @@ a {
     padding: 10px;
 }
 
+.list-horizontal {
+    list-style: none;
+    display: inline-block;
+    padding: 10px;
+}
+
 .wrapper {
 }
 
@@ -232,12 +238,15 @@ video {
 
 .notification{
     display: none;
-    background-color: black;
+    background: rgba(0,0,0,0.5);
     width: 200px;
     height: 100px;
+    position: relative;
+    left: -170px;
     float: right;
     border-radius: 10px;
     border: 1px solid white;
+    z-index: 5;
 }
 
 .notification li{

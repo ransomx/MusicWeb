@@ -18,6 +18,7 @@ namespace MusicWeb.Controllers
     public class PlaylistController : Controller
     {
         private MusicWebDB db = new MusicWebDB();
+        public string UserId = "http://schemas.microsoft.com/identity/claims/objectidentifier";
 
         // GET: Playlists
         public ActionResult Index()
@@ -57,15 +58,15 @@ namespace MusicWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var store = new UserStore<Account>(db);
-                var userManager = new UserManager<Account>(store);
+                var principal = ClaimsPrincipal.Current;
+                string id = principal.FindFirst(UserId).Value;
+                string name = principal.FindFirst("name").Value;
 
-                var claimsIdentity = User.Identity as ClaimsIdentity;
-                var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-                var userIdValue = userIdClaim.Value;
+                playlist.Creator_id = id;
+                playlist.Creator_name = name;
+                db.Entry(playlist).State = EntityState.Added;
+                db.SaveChanges();
 
-                userManager.FindById(userIdValue).Playlists.Add(playlist);
-                store.Context.SaveChanges();
                 return PartialView("../Home/HomeSearch");
             }
             return PartialView(playlist);
@@ -160,11 +161,13 @@ namespace MusicWeb.Controllers
         public void AddToPlaylist(ChoosePlaylist topass, int PlaylistId)
         {
             Song s = db.Songs.FirstOrDefault(m => m.Id == topass.SongId);
-            db.Playlists.FirstOrDefault(p => p.Id == PlaylistId).SongList.Add(s);
+            Playlist playlist = db.Playlists.FirstOrDefault(p => p.Id == PlaylistId);
+            playlist.SongList.Add(s);
+
+            db.Entry(playlist).State = EntityState.Modified;
             db.SaveChanges();
 
             ViewBag.Message = s.Title + " added to " + db.Playlists.FirstOrDefault(p => p.Id == PlaylistId).Name;
-
             Search model = new Search();
             Song song = new Song { Title = topass.SearchedSong };
         }
@@ -173,15 +176,15 @@ namespace MusicWeb.Controllers
         [HttpGet]
         public ActionResult ChoosePlaylist(int toAdd, string searchedSong)
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            var userIdValue = userIdClaim.Value;
-            Account acc = db.Users.FirstOrDefault(a => a.Id == userIdValue);
+            var userIdValue = ClaimsPrincipal.Current.FindFirst(UserId).Value;
+            var playlists = (from p in db.Playlists
+                            where p.Creator_id == userIdValue
+                            select p).ToList();
             ChoosePlaylist topass = new ChoosePlaylist();
 
             topass.SongId = toAdd;
             topass.SearchedSong = searchedSong;
-            ViewBag.PlaylistId = new SelectList(acc.Playlists, "Id", "Name");
+            ViewBag.PlaylistId = new SelectList(playlists, "Id", "Name");
 
             return PartialView("ChoosePlaylist", topass);
         }
@@ -189,12 +192,11 @@ namespace MusicWeb.Controllers
         [Authorize]
         public ActionResult ListPlaylists()
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            var userIdValue = userIdClaim.Value;
+            var principal = ClaimsPrincipal.Current;
+            string id = principal.FindFirst(UserId).Value;
 
             IEnumerable<Playlist> playlists = (from s in db.Playlists
-                                               where s.Creator.Id == userIdValue
+                                               where s.Creator_id == id
                                                select s).ToList();
             return PartialView(playlists);
         }

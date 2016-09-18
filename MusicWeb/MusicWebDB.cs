@@ -8,10 +8,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace MusicWeb
 {
-    public class MusicWebDB : IdentityDbContext<Account>
+    public class MusicWebDB : DbContext
     {
         public MusicWebDB() : base("name=MusicWebDBAzure") { }
-        //public MusicWebDB() : base("name=MusicWebDB") { }
 
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Genre> Genres { get; set; }

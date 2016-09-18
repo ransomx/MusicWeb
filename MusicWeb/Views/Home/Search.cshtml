@@ -23,8 +23,7 @@
                     <td>@Html.DisplayFor(item => s.TimeUploaded)</td>
                     <td><a class="btn btn-group-sm" onclick="PlaySong(@s.Id)">Play</a></td>
                     <td><a class="btn btn-group-sm popup-display"
-                                data-url="@Url.Action("ChoosePlaylist", "Playlist", 
-                                         new { toAdd = s.Id , searchedSong = s.Title})">Add</a></td>
+                                data-url="@Url.Action("ChoosePlaylist", "Playlist", new { toAdd = s.Id , searchedSong = s.Title})">Add</a></td>
                     <td> 
                         @Html.ActionLink("Download", "Download", "Home", new { toDownload = s.Filename }, htmlAttributes : new { onclick = "ShowNotification('Downloading song: "+s.Filename+"')" })
                     </td>

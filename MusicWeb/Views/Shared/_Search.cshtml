@@ -8,7 +8,6 @@
     InsertionMode = InsertionMode.Replace
 }, new { @class = "form-inline" }))
 {
-    @Html.AntiForgeryToken()
     <div class="form-inline">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

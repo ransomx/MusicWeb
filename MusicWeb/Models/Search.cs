@@ -14,8 +14,6 @@ namespace MusicWeb.Models
         [Required, FileExtensions(ErrorMessage = "Specify an audio file.", Extensions = "mp3,wav,ogg")]
         public HttpPostedFileBase File { get; set; }
 
-        public Account Logged { get; set; }
-
         public Song songToPlay { get; set; }
     }
 }

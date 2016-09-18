@@ -3,6 +3,30 @@
 <h2> Welcome Administrator </h2>
 <hr />
 <div class="contained-data">
+    <h4>Traffic info</h4>
+    <ul class="list-horizontal">
+        <li>Songs uploaded: @Model.Songs.Count</li>
+        <li>Playlists created: @Model.Playlists.Count</li>
+        <li>Genres: @Model.Genres.Count</li>
+    </ul>
+
+    <h4>Genres</h4>
+    <table class="search-results-table overlay inline">
+        <thead>
+            <tr>
+                <td>@Html.DisplayNameFor(model => Model.Songs.FirstOrDefault().Title)</td>
+            </tr>
+        </thead>
+        <tbody class="contained-data-sm">
+            @foreach (Genre s in Model.Genres)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => s.Name)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     <h4>Songs</h4>
     <table class="search-results-table overlay inline">
         <thead>
@@ -33,7 +57,7 @@
         <thead>
             <tr>
                 <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().Name)</td>
-                <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().Creator)</td>
+                <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().Creator_name)</td>
                 <td>@Html.DisplayNameFor(model => Model.Playlists.FirstOrDefault().SongList)</td>
             </tr>
         </thead>
@@ -42,29 +66,8 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(model => s.Name)</td>
-                    <td>@Html.DisplayFor(model => s.Creator.UserName)</td>
+                    <td>@Html.DisplayFor(model => s.Creator_name)</td>
                     <td>@Html.DisplayFor(model => s.SongList.Count)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <h4>Users</h4>
-    <table class="search-results-table overlay inline">
-        <thead>
-            <tr>
-                <td>@Html.DisplayNameFor(model => Model.Users.FirstOrDefault().UserName)</td>
-                <td>@Html.DisplayNameFor(model => Model.Users.FirstOrDefault().Email)</td>
-                <td>@Html.DisplayNameFor(model => Model.Users.FirstOrDefault().Playlists.Count)</td>
-            </tr>
-        </thead>
-        <tbody class="contained-data-sm">
-            @foreach (Account s in Model.Users)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(model => s.UserName)</td>
-                    <td>@Html.DisplayFor(model => s.Email)</td>
-                    <td>@Html.DisplayFor(model => s.Playlists.Count)</td>
                 </tr>
             }
         </tbody>

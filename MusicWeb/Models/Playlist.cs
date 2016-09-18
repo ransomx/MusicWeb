@@ -13,6 +13,7 @@ namespace MusicWeb.Models
 
         [Required(ErrorMessage = "Your {0} is required!")]
         public virtual string Name { get; set; }
-        public virtual Account Creator { get; set; }
+        public virtual string Creator_id { get; set; }
+        public virtual string Creator_name { get; set; }
     }
 }

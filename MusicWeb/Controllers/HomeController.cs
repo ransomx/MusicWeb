@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 using System.IO;
 using System.Net;
+using System.Security.Claims;
 
 namespace MusicWeb.Controllers
 {
@@ -57,10 +58,9 @@ namespace MusicWeb.Controllers
         private Song GetSong(int index)
         {
             Song ret = null;
-            if (index < 0) SongIndex = index = CurrentPlaylist.SongList.Count - 1;
-            else if (index >= CurrentPlaylist.SongList.Count)
-                SongIndex = index = 0;
+            if (index >= 0 && index < CurrentPlaylist.SongList.Count)
             ret = CurrentPlaylist.SongList.ElementAt(index);
+
             return ret;
         }
 
@@ -69,7 +69,7 @@ namespace MusicWeb.Controllers
             Song next = null;
             if (CurrentPlaylist != null)
                 next = GetSong(++SongIndex);
-            next= CurrentSong;
+            CurrentSong = next;
             return next;
         }
 
@@ -88,7 +88,24 @@ namespace MusicWeb.Controllers
         // GET _UserMenu
         public ActionResult UserMenu()
         {
-            return PartialView("../Shared/_UserMenu");
+            var principal = ClaimsPrincipal.Current;
+
+         // Look for the groups claim for the 'Dev/Test' group.
+         Claim role = principal.FindFirst("extension_Role");
+
+            if ( role != null && role.Value.Equals("Admin"))
+            {
+                return PartialView("../Shared/_AdminUserMenu");
+            }
+            else if(role != null && role.Value.Equals("User"))
+            {
+                return PartialView("../Shared/_UserMenu");
+            }
+            else
+            {
+                return PartialView("../Shared/_NoUserMenu");
+            }
+            
         }
 
         // GET About

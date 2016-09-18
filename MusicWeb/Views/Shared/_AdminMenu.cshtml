@@ -1,0 +1,22 @@
+﻿@if (HttpContext.Current.User.Identity.IsAuthenticated)
+{
+    <div class="sidebar">
+        <h3>Menu</h3>
+        @if (HttpContext.Current.User.IsInRole("Administrator"))
+        {
+            <h4>Website info</h4>
+            <ul class="list-vertical">
+                <li><a data-url="@Url.Action("AdminPage", "Account")" class="fetchable">Display</a></li>
+            </ul>
+        }
+        @if (HttpContext.Current.User.IsInRole("Users"))
+        {
+            <h4>Actions</h4>
+            <ul class="list-vertical">
+                <li><a data-url="@Url.Action("Upload", "Logged")" class="fetchable">Upload</a></li>
+                <li><a data-url="@Url.Action("Create", "Playlist")" class="fetchable">Create playlist</a></li>
+            </ul>
+        }
+        @Html.Action("ListPlaylists", "Playlist")
+    </div>
+}
