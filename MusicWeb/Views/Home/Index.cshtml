@@ -1,8 +1,39 @@
 ﻿<div class="background">
-    <video autoplay loop muted>
-        <source src="~/Content/Media/me-loading.mp4" type="video/mp4" />
-    </video>
-</div>
+        <video id="azuremediaplayer" muted class="azuremediaplayer amp-default-skin" width="100%" height="100%"> </video>
+            <script>
+                  var myOptions = {
+                        heuristicProfile: "HighQuality",
+                        techOrder: ["azureHtml5JS", "html5", "flashSS", "silverlightSS", ],
+                        "nativeControlsForTouch": false,
+                        autoplay: true,
+                        controls: false,
+                        poster: "yourPoster.jpg",
+                        logo: { enabled: false }
+                  };
+ 
+ 
+                var myPlayer = amp("azuremediaplayer", myOptions, function () {
+                   //resize-to-fit handler code goes here if you’re doing full screen background video
+                  });
+ 
+                  //Register for events after intialization not in Ready function to ensure all event are captured
+                  myPlayer.addEventListener(amp.eventName.play, _ampEventHandler);
+                  myPlayer.addEventListener(amp.eventName.ended, _ampEventHandler);
+           
+                  myPlayer.src([
+                        { src: "https://mediasvcp81zstj7f6ft2.blob.core.windows.net/asset-a747bbb6-6b89-4cb8-81bb-9f0bb1714340/me-loading.mp4?sv=2012-02-12&sr=c&si=9ac47168-136c-4f17-94e0-766cdd7d95fe&sig=4U8PszZqYxd5tf6SrHvXQmnQ7%2BR%2FzgEOKbrvYuYD2pQ%3D&st=2016-09-19T15%3A44%3A42Z&se=2116-08-26T15%3A44%3A42Z" },
+                  ]);
+ 
+                  function _ampEventHandler(evt) {
+                        if ("play" == evt.type) {
+                              $('#video-viewport').css("opacity", "1");
+                        }
+                        if ("ended" == evt.type) {
+                              myPlayer.play();
+                        }
+                  }
+            </script>
+      </div>
 <div class="cover-clip">
 
 </div>
