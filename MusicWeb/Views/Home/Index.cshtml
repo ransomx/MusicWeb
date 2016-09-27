@@ -7,6 +7,7 @@
                         "nativeControlsForTouch": false,
                         autoplay: true,
                         controls: false,
+                        muted: true,
                         poster: "yourPoster.jpg",
                         logo: { enabled: false }
                   };
@@ -26,7 +27,7 @@
  
                   function _ampEventHandler(evt) {
                         if ("play" == evt.type) {
-                              $('#video-viewport').css("opacity", "1");
+                            $('.background').css("opacity", "1");
                         }
                         if ("ended" == evt.type) {
                               myPlayer.play();

@@ -229,14 +229,12 @@
   <ItemGroup>
     <Content Include="Content\jquery.mCustomScrollbar.min.css" />
     <Content Include="Content\Media\icons_exclamation.png" />
-    <Content Include="Content\Media\me-loading.mp4" />
     <Content Include="MusicWeb.mdf" />
     <Content Include="MusicWeb_log.ldf">
       <DependentUpon>MusicWeb.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Media\planet_flare.jpg" />
     <Content Include="Content\Welcome.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

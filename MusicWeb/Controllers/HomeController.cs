@@ -79,6 +79,13 @@ namespace MusicWeb.Controllers
             return View();
         }
 
+        // GET Error
+        public ActionResult Error(string message)
+        {
+            ViewBag.error = message;
+            return View();
+        }
+
         // GET _UserControlPanel
         public ActionResult UserControlPanel()
         {
@@ -105,7 +112,6 @@ namespace MusicWeb.Controllers
             {
                 return PartialView("../Shared/_NoUserMenu");
             }
-            
         }
 
         // GET About
