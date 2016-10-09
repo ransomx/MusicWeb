@@ -100,7 +100,7 @@ namespace MusicWeb.Controllers
          // Look for the groups claim for the 'Dev/Test' group.
          Claim role = principal.FindFirst("extension_Role");
 
-            if ( role != null && role.Value.Equals("Admin"))
+            if ( role != null && role.Value.Contains("Admin"))
             {
                 return PartialView("../Shared/_AdminUserMenu");
             }
